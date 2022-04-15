@@ -1,0 +1,42 @@
+{
+  "name": "colorly",
+  "version": "0.1.0",
+  "description": "this package is a library for parsing colors within the sRGB color space. it includes rgb(a), hsl(a), hsv(a), hex and cymk. It mainly focuses on web standards, which is why it has build in css support. However, it may be used in any application that follows the css color standards level 4. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deckerdent/colorly.git"
+  },
+  "keywords": [
+    "color",
+    "rgb",
+    "rgba",
+    "hex",
+    "hsl",
+    "hsla",
+    "hsv",
+    "hsva",
+    "cymk",
+    "cmyk",
+    "css",
+    "background-color",
+    "parser",
+    "colorly",
+    "colors",
+    "saturation",
+    "hue",
+    "value",
+    "lightness",
+    "brightness",
+    "luminosity"
+  ],
+  "author": "deckerdent",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/deckerdent/colorly/issues"
+  },
+  "homepage": "https://github.com/deckerdent/colorly#readme"
+}
