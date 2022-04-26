@@ -3,12 +3,12 @@
  * @since 20220414
  *
  */
-import GenericsUtil from "./util/GenericsUtil";
-import ParserUtil from "./util/ParserUtil";
-import CSSUtil from "./util/CSSUtil";
-import CSSColors from "./util/CSSColors";
+import GenericsUtil from "./util/GenericsUtil.js";
+import ParserUtil from "./util/ParserUtil.js";
+import CSSUtil from "./util/CSSUtil.js";
+import CSSColors from "./util/CSSColors.js";
 
-import Color from "./model/Color";
+import Color from "./model/Color.js";
 
 class ColorFactory {
   //using variables

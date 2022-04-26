@@ -2,7 +2,7 @@
  * @author DeckerM7
  * @since 20220414
  */
-import GenericsUtil from "./GenericsUtil";
+import GenericsUtil from "./GenericsUtil.js";
 
 class CSSUtil {
   static hexPrefix = "#";

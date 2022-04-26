@@ -2,9 +2,9 @@
  * @author DeckerM7
  * @since 20220411
  */
-import GenericsUtil from "../util/GenericsUtil";
-import ParserUtil from "../util/ParserUtil";
-import CSSUtil from "../util/CSSUtil";
+import GenericsUtil from "../util/GenericsUtil.js";
+import ParserUtil from "../util/ParserUtil.js";
+import CSSUtil from "../util/CSSUtil.js";
 
 class Color {
   r;

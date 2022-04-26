@@ -1,9 +1,9 @@
-/**This script consists of all necessary code to parse a color into another format
+/**GenericsUtil script consists of all necessary code to parse a color into another format
  * @author  DeckerM7
  * @since   20220411
  */
 
-import GenericsUtil from "./GenericsUtil";
+import GenericsUtil from "./GenericsUtil.js";
 
 class ParserUtil {
   /**
@@ -15,13 +15,11 @@ class ParserUtil {
     let hexArray = GenericsUtil.__convertHexToArray(
       GenericsUtil.convertToHarmonizedHexValue(hex)
     );
-    let rgba = GenericsUtil.isThreeElementsArray(hexArray)
-      ? hexArray.map((e) => GenericsUtil.convertHexStringToIntValue(e))
-      : hexArray.map((e, i) =>
-          i < GenericsUtil.validArrayLength[0]
-            ? GenericsUtil.convertHexStringToIntValue(e)
-            : GenericsUtil.convertHexStringToIntValue(e) / GenericsUtil.maxRGB
-        );
+
+    let rgba = hexArray.map((e) => parseInt(e, GenericsUtil.hex));
+
+    if (rgba.length === GenericsUtil.validArrayLength[1])
+      rgba[3] = rgba[3] / GenericsUtil.maxRGB;
 
     return rgba;
   };
@@ -29,35 +27,34 @@ class ParserUtil {
   static parseHexToCYMK = (hex) => {
     if (!GenericsUtil.isHexValue(hex)) return;
 
-    return ParserUtil.parseRGBAToCYMK(...ParserUtil.parseHexToRGBA());
+    return ParserUtil.parseRGBAToCYMK(...ParserUtil.parseHexToRGBA(hex));
   };
 
   static parseHexToHSL = (hex) => {
     if (!GenericsUtil.isHexValue(hex)) return;
 
-    return ParserUtil.parseRGBAToHSL(...ParserUtil.parseHexToRGBA());
+    return ParserUtil.parseRGBAToHSL(...ParserUtil.parseHexToRGBA(hex));
   };
 
   static parseHexToHSV = (hex) => {
     if (!GenericsUtil.isHexValue(hex)) return;
 
-    return ParserUtil.parseRGBAToHSV(...ParserUtil.parseHexToRGBA());
+    return ParserUtil.parseRGBAToHSV(...ParserUtil.parseHexToRGBA(hex));
   };
 
   /**
    * rgba
    */
   static parseRGBAToHex = (r = 255, g = 255, b = 255, a = 1) => {
-    a *= GenericsUtil.maxRGB;
     let rgba = [r, g, b, a];
-    if (!GenericsUtil.isRGBAArray()) return;
+
+    if (!GenericsUtil.isRGBAArray(rgba)) return;
+    rgba[3] *= GenericsUtil.maxRGB;
 
     let hex = rgba
-      .map((e) => {
-        e = GenericsUtil.convertHexIntValueToString(e);
-        return e;
-      })
+      .map((e) => Math.round(e).toString(GenericsUtil.hex))
       .join("");
+
     return GenericsUtil.convertToHarmonizedHexValue(hex);
   };
 
@@ -65,7 +62,7 @@ class ParserUtil {
     let rgb = [r, g, b];
     if (!GenericsUtil.isRGBArray(rgb)) return;
 
-    rgb = rgb.every((e) => GenericsUtil.normalizeRGBValue(e));
+    rgb = rgb.map((e) => GenericsUtil.normalizeRGBValue(e));
 
     let k = 1 - Math.max(...rgb),
       c = (1 - rgb[0] - k) / (1 - k),
@@ -79,9 +76,9 @@ class ParserUtil {
     let rgb = [r, g, b];
     if (!GenericsUtil.isRGBArray(rgb)) return;
 
-    let h = GenericsUtil.getHueFromRGBA(rgb),
-      s = GenericsUtil.getSaturationFromRGBA(rgb),
-      l = GenericsUtil.getLuminosityFromRGBA(rgb);
+    let h = GenericsUtil.getHueFromRGBA(...rgb),
+      s = GenericsUtil.getSaturationFromRGBA(...rgb),
+      l = GenericsUtil.getLuminosityFromRGBA(...rgb);
 
     return [h, s, l];
   };
@@ -89,20 +86,46 @@ class ParserUtil {
   static parseRGBAToHSV = (r = 255, g = 255, b = 255) => {
     let rgb = [r, g, b];
     if (!GenericsUtil.isRGBArray(rgb)) return;
-
-    let h = this.getHueFromRGBA(rgb),
-      s = this.getSaturationFromRGBA(rgb),
-      v = this.getValueFromRGBA(rgb);
-
+    /**
+     * 
+    let h = GenericsUtil.getHueFromRGBA(...rgb),
+      s = GenericsUtil.getSaturationFromRGBA(...rgb),
+      v = GenericsUtil.getValueFromRGBA(...rgb)
     return [h, s, v];
+    */
+
+    rgb = GenericsUtil.normalizeRGBArray(rgb);
+
+    let cMax = Math.max(...rgb),
+      cMin = Math.min(...rgb),
+      delta = cMax - cMin;
+
+    let h =
+      delta === 0
+        ? 0
+        : cMax === rgb[0]
+        ? GenericsUtil.standardHue * (((rgb[1] - rgb[2]) / delta) % 6)
+        : cMax === rgb[1]
+        ? GenericsUtil.standardHue * ((rgb[2] - rgb[0]) / delta + 2)
+        : GenericsUtil.standardHue * ((rgb[0] - rgb[1]) / delta + 4);
+    h = h < 0 ? 360 + h : h > 360 ? h - 360 : h;
+    let s = cMax === 0 ? 0 : delta / cMax;
+
+    return [h, s, cMax];
   };
 
   /**
    * cmyk
    */
   static parseCYMKToHex = (c = 1, m = 1, y = 1, k = 1) => {
-    let cymk = [c, m, y, k];
+    let cymk = [c, y, m, k];
+    console.log(cymk);
     if (!GenericsUtil.isCYMKArray(cymk)) return;
+    console.log("rgba", ParserUtil.parseCYMKToRGBA(...cymk));
+    console.log(
+      "hex",
+      ParserUtil.parseRGBAToHex(...ParserUtil.parseCYMKToRGBA(...cymk))
+    );
 
     return ParserUtil.parseRGBAToHex(...ParserUtil.parseCYMKToRGBA(...cymk));
   };
@@ -139,10 +162,10 @@ class ParserUtil {
     let hsl = [h, s, l];
     if (!GenericsUtil.isHSLArray(hsl)) return;
 
-    return ParserUtil.parseRGBAToHex(...ParserUtil.parseHSLToRGB(...hsl));
+    return ParserUtil.parseRGBAToHex(...ParserUtil.parseHSLToRGBA(...hsl));
   };
 
-  static parseHSLToRGB = (h = 60, s = 1, l = 1) => {
+  static parseHSLToRGBA = (h = 60, s = 1, l = 1) => {
     let hsl = [h, s, l];
     if (!GenericsUtil.isHSLArray(hsl)) return;
 
@@ -162,14 +185,14 @@ class ParserUtil {
     let hsl = [h, s, l];
     if (!GenericsUtil.isHSLArray(hsl)) return;
 
-    return ParserUtil.parseRGBAToCYMK(...ParserUtil.parseHSLToRGB(...hsl));
+    return ParserUtil.parseRGBAToCYMK(...ParserUtil.parseHSLToRGBA(...hsl));
   };
 
   static parseHSLToHSV = (h = 60, s = 1, l = 1) => {
     let hsl = [h, s, l];
     if (!GenericsUtil.isHSLArray(hsl)) return;
 
-    return ParserUtil.parseRGBAToHSV(...ParserUtil.parseHSLToRGB(...hsl));
+    return ParserUtil.parseRGBAToHSV(...ParserUtil.parseHSLToRGBA(...hsl));
   };
 
   /**
@@ -195,6 +218,8 @@ class ParserUtil {
     );
 
     rgba[3] = GenericsUtil.maxDecimalPercentage;
+
+    return rgba;
   };
 
   static parseHSVToHSL = (h = 60, s = 1, v = 1) => {
@@ -217,27 +242,20 @@ class ParserUtil {
 
   static getRGBPerHue = (c, x, m, h) => {
     let normalizedRBG;
-    switch (h) {
-      case (h >= 0 && h < 60) || h === 360:
-        normalizedRBG = [c + m, x + m, m];
-        break;
-      case h >= 60 && h < 120:
-        normalizedRBG = [x + m, c + m, m];
-        break;
-      case h >= 120 && h < 180:
-        normalizedRBG = [m, c + m, x + m];
-        break;
-      case h >= 180 && h < 240:
-        normalizedRBG = [m, x + m, c + m];
-        break;
-      case h >= 240 && h < 300:
-        normalizedRBG = [x + m, m, c + m];
-        break;
-      case h >= 300 && h < 360:
-        normalizedRBG = [c + m, m, x + m];
-        break;
-      default:
-        break;
+    if ((h >= 0 && h < 60) || h === 360) {
+      normalizedRBG = [c + m, x + m, m];
+    } else if (h >= 60 && h < 120) {
+      normalizedRBG = [x + m, c + m, m];
+    } else if (h >= 120 && h < 180) {
+      normalizedRBG = [m, c + m, x + m];
+    } else if (h >= 180 && h < 240) {
+      normalizedRBG = [m, x + m, c + m];
+    } else if (h >= 240 && h < 300) {
+      normalizedRBG = [x + m, m, c + m];
+    } else if (h >= 300 && h < 360) {
+      normalizedRBG = [c + m, m, x + m];
+    } else {
+      normalizedRBG = [0, 0, 0];
     }
 
     return normalizedRBG;
