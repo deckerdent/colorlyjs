@@ -174,7 +174,7 @@ const testRGBAFunctions = [
   "rgba(127, 0, 255, 0)",
   "rgba(0, 0, 0, 0.789)",
   "rgba(255, 255, 255, 0.42)",
-  "rgba(127, 127, 127, 0.0000001)",
+  "rgba(127, 127, 127, 0.00000010)",
   undefined,
   undefined,
   undefined,

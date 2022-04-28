@@ -149,7 +149,7 @@ class Color {
   };
 
   getLightness = () => {
-    return GenericsUtil.getLightnessFromRGBA(this.r, this.g, this.b);
+    return GenericsUtil.getLuminosityFromRGBA(this.r, this.g, this.b);
   };
 
   getValue = () => {
@@ -208,7 +208,7 @@ class Color {
 
     cymk[0] = c;
 
-    let [r, g, b] = ParserUtil.parseCYMKToRGB(...cymk);
+    let [r, g, b] = ParserUtil.parseCYMKToRGBA(...cymk);
 
     this.setRed(r);
     this.setGreen(g);
@@ -220,7 +220,7 @@ class Color {
 
     cymk[1] = y;
 
-    let [r, g, b] = ParserUtil.parseCYMKToRGB(...cymk);
+    let [r, g, b] = ParserUtil.parseCYMKToRGBA(...cymk);
 
     this.setRed(r);
     this.setGreen(g);
@@ -232,7 +232,7 @@ class Color {
 
     cymk[2] = m;
 
-    let [r, g, b] = ParserUtil.parseCYMKToRGB(...cymk);
+    let [r, g, b] = ParserUtil.parseCYMKToRGBA(...cymk);
 
     this.setRed(r);
     this.setGreen(g);
@@ -244,7 +244,7 @@ class Color {
 
     cymk[3] = k;
 
-    let [r, g, b] = ParserUtil.parseCYMKToRGB(...cymk);
+    let [r, g, b] = ParserUtil.parseCYMKToRGBA(...cymk);
 
     this.setRed(r);
     this.setGreen(g);

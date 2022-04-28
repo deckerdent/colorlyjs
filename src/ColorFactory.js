@@ -13,6 +13,20 @@ import Color from "./model/Color.js";
 class ColorFactory {
   //using variables
   //hex
+  static createColor = (mode, a, b, c, d) => {
+    let modes = {
+      css: ColorFactory.createColorFromCSSString,
+      hex: ColorFactory.createColorFromHex,
+      rgb: ColorFactory.createColorFromRGB,
+      rgba: ColorFactory.createColorFromRGBA,
+      cymk: ColorFactory.createColorFromCYMK,
+      hsl: ColorFactory.createColorFromHSL,
+      hsv: ColorFactory.createColorFromHSV,
+    };
+
+    return modes[mode] ? modes[mode](a, b, c, d) : undefined;
+  };
+
   static createColorFromHex = (hex) => {
     if (!GenericsUtil.isHexValue(hex)) return;
     let rgba = ParserUtil.parseHexToRGBA(
@@ -41,31 +55,36 @@ class ColorFactory {
   //hsl
   static createColorFromHSL = (h, s, l) => {
     if (!GenericsUtil.isHSLArray([h, s, l])) return;
-    return new Color(...ParserUtil.parseHSLToRGB(h, s, l));
+    return new Color(...ParserUtil.parseHSLToRGBA(h, s, l));
   };
 
   //hsv
   static createColorFromHSV = (h, s, v) => {
     if (!GenericsUtil.isHSVArray([h, s, v])) return;
-    return new Color(ParserUtil.parseHSVToRGBA(h, s, v));
+    return new Color(...ParserUtil.parseHSVToRGBA(h, s, v));
   };
 
   //using css strings
   //hex
   static createColorFromCSSString = (cssStr) => {
+    let color;
     if (cssStr.indexOf(CSSUtil.hexPrefix) === 0) {
-      ColorFactory.createColorFromHexCSSString(cssStr);
+      color = ColorFactory.createColorFromHexCSSString(cssStr);
     } else if (cssStr.indexOf(CSSUtil.rgbaPrefix) === 0) {
-      ColorFactory.createColorFromRGBACSSString(cssStr);
+      color = ColorFactory.createColorFromRGBACSSString(cssStr);
     } else if (cssStr.indexOf(CSSUtil.rgbPrefix) === 0) {
-      ColorFactory.createColorFromRGBCSSString(cssStr);
+      color = ColorFactory.createColorFromRGBCSSString(cssStr);
     } else if (cssStr.indexOf(CSSUtil.cymkPrefix) === 0) {
-      ColorFactory.createColorFromCYMKCSSString(cssStr);
+      color = ColorFactory.createColorFromCYMKCSSString(cssStr);
     } else if (cssStr.indexOf(CSSUtil.hslPrefix) === 0) {
-      ColorFactory.createColorFromHSLCSSString(cssStr);
+      color = ColorFactory.createColorFromHSLCSSString(cssStr);
     } else if (cssStr.indexOf(CSSUtil.hsvPrefix) === 0) {
-      ColorFactory.createColorFromHSVCSSString(cssStr);
+      color = ColorFactory.createColorFromHSVCSSString(cssStr);
+    } else {
+      return;
     }
+
+    return color;
   };
 
   static createColorFromHexCSSString = (cssStr) => {
