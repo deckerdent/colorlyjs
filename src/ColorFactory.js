@@ -52,6 +52,22 @@ class ColorFactory {
 
   //using css strings
   //hex
+  static createColorFromCSSString = (cssStr) => {
+    if (cssStr.indexOf(CSSUtil.hexPrefix) === 0) {
+      ColorFactory.createColorFromHexCSSString(cssStr);
+    } else if (cssStr.indexOf(CSSUtil.rgbaPrefix) === 0) {
+      ColorFactory.createColorFromRGBACSSString(cssStr);
+    } else if (cssStr.indexOf(CSSUtil.rgbPrefix) === 0) {
+      ColorFactory.createColorFromRGBCSSString(cssStr);
+    } else if (cssStr.indexOf(CSSUtil.cymkPrefix) === 0) {
+      ColorFactory.createColorFromCYMKCSSString(cssStr);
+    } else if (cssStr.indexOf(CSSUtil.hslPrefix) === 0) {
+      ColorFactory.createColorFromHSLCSSString(cssStr);
+    } else if (cssStr.indexOf(CSSUtil.hsvPrefix) === 0) {
+      ColorFactory.createColorFromHSVCSSString(cssStr);
+    }
+  };
+
   static createColorFromHexCSSString = (cssStr) => {
     let hex = CSSUtil.cssStringToHarmonizedHexString(cssStr);
 

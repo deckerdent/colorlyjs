@@ -10,7 +10,7 @@ class CSSUtil {
   static rgbPrefix = "rgb(";
   static rgbaPrefix = "rgba(";
 
-  static cymkPrefix = "cymk(";
+  static cymkPrefix = "cmyk(";
 
   static hslPrefix = "hsl(";
 
@@ -20,13 +20,15 @@ class CSSUtil {
   static closingParanthesis = ")";
   static percentageSign = "%";
 
-  static fixedDecimalDigits = 3;
+  static fixedDecimalDigits = 8;
 
   /**
    * to CSS String
    */
   //hex
   static toHexCSSString = (hex = "FFFFFF") => {
+    if (GenericsUtil.__isString(hex)) hex = CSSUtil.__removeWhitespace(hex);
+
     let harmonizedHex = GenericsUtil.convertToHarmonizedHexValue(hex);
     if (!harmonizedHex) return;
 
@@ -42,7 +44,7 @@ class CSSUtil {
       CSSUtil.rgbPrefix +
       rgb
         .map((e) => CSSUtil.__toFixedNumber(e, CSSUtil.fixedDecimalDigits))
-        .join(CSSUtil.valueSaparator) +
+        .join(CSSUtil.valueSaparator + " ") +
       CSSUtil.closingParanthesis;
 
     return rgb;
@@ -56,7 +58,7 @@ class CSSUtil {
       CSSUtil.rgbaPrefix +
       rgba
         .map((e) => CSSUtil.__toFixedNumber(e, CSSUtil.fixedDecimalDigits))
-        .join(CSSUtil.valueSaparator) +
+        .join(CSSUtil.valueSaparator + " ") +
       CSSUtil.closingParanthesis;
 
     return rgba;
@@ -70,8 +72,14 @@ class CSSUtil {
     cymk =
       CSSUtil.cymkPrefix +
       cymk
-        .map((e) => CSSUtil.__toFixedNumber(e, CSSUtil.fixedDecimalDigits))
-        .join(CSSUtil.valueSaparator) +
+        .map(
+          (e) =>
+            CSSUtil.__toFixedNumber(
+              e * GenericsUtil.maxIntPercentage,
+              CSSUtil.fixedDecimalDigits
+            ) + CSSUtil.percentageSign
+        )
+        .join(CSSUtil.valueSaparator + " ") +
       CSSUtil.closingParanthesis;
 
     return cymk;
@@ -83,17 +91,17 @@ class CSSUtil {
     if (!GenericsUtil.isHSLArray(hsl)) return;
 
     hsl =
-      CSSUtil.cymkPrefix +
+      CSSUtil.hslPrefix +
       hsl
         .map((e, i) =>
           i > GenericsUtil.zero
             ? CSSUtil.__toFixedNumber(
                 e * GenericsUtil.maxIntPercentage,
                 CSSUtil.fixedDecimalDigits
-              )
+              ) + CSSUtil.percentageSign
             : CSSUtil.__toFixedNumber(e, CSSUtil.fixedDecimalDigits)
         )
-        .join(CSSUtil.valueSaparator) +
+        .join(CSSUtil.valueSaparator + " ") +
       CSSUtil.closingParanthesis;
     return hsl;
   };
@@ -111,10 +119,10 @@ class CSSUtil {
             ? CSSUtil.__toFixedNumber(
                 e * GenericsUtil.maxIntPercentage,
                 CSSUtil.fixedDecimalDigits
-              )
+              ) + CSSUtil.percentageSign
             : CSSUtil.__toFixedNumber(e, CSSUtil.fixedDecimalDigits)
         )
-        .join(CSSUtil.valueSaparator) +
+        .join(CSSUtil.valueSaparator + " ") +
       CSSUtil.closingParanthesis;
 
     return hsv;
@@ -133,8 +141,9 @@ class CSSUtil {
   static cssStringToRGBArray = (cssStr) => {
     cssStr = CSSUtil.__removeWhitespace(cssStr);
     if (
-      !cssStr.startsWith(CSSUtil.rgbPrefix) &&
-      cssStr.endsWith(CSSUtil.closingParanthesis)
+      !cssStr ||
+      !cssStr.startsWith(CSSUtil.rgbPrefix) ||
+      !cssStr.endsWith(CSSUtil.closingParanthesis)
     )
       return;
 
@@ -152,8 +161,9 @@ class CSSUtil {
   static cssStringToRGBAArray = (cssStr) => {
     cssStr = CSSUtil.__removeWhitespace(cssStr);
     if (
-      !cssStr.startsWith(CSSUtil.rgbaPrefix) &&
-      cssStr.endsWith(CSSUtil.closingParanthesis)
+      !cssStr ||
+      !cssStr.startsWith(CSSUtil.rgbaPrefix) ||
+      !cssStr.endsWith(CSSUtil.closingParanthesis)
     )
       return;
 
@@ -172,8 +182,9 @@ class CSSUtil {
   static cssStringToCYMKArray = (cssStr) => {
     cssStr = CSSUtil.__removeWhitespace(cssStr);
     if (
-      !cssStr.startsWith(CSSUtil.cymkPrefix) &&
-      cssStr.endsWith(CSSUtil.closingParanthesis)
+      !cssStr ||
+      !cssStr.startsWith(CSSUtil.cymkPrefix) ||
+      !cssStr.endsWith(CSSUtil.closingParanthesis)
     )
       return;
 
@@ -181,7 +192,7 @@ class CSSUtil {
       .replace(CSSUtil.cymkPrefix, "")
       .replace(CSSUtil.closingParanthesis, "")
       .split(CSSUtil.valueSaparator)
-      .map((e) => parseFloat(e));
+      .map((e) => parseFloat(e) / GenericsUtil.maxIntPercentage);
 
     if (!GenericsUtil.isCYMKArray(cymk)) return;
 
@@ -192,8 +203,9 @@ class CSSUtil {
   static cssStringToHSLArray = (cssStr) => {
     cssStr = CSSUtil.__removeWhitespace(cssStr);
     if (
-      !cssStr.startsWith(CSSUtil.hslPrefix) &&
-      cssStr.endsWith(CSSUtil.closingParanthesis)
+      !cssStr ||
+      !cssStr.startsWith(CSSUtil.hslPrefix) ||
+      !cssStr.endsWith(CSSUtil.closingParanthesis)
     )
       return;
 
@@ -201,7 +213,9 @@ class CSSUtil {
       .replace(CSSUtil.hslPrefix, "")
       .replace(CSSUtil.closingParanthesis, "")
       .split(CSSUtil.valueSaparator)
-      .map((e) => parseFloat(e));
+      .map((e, i) =>
+        i === 0 ? parseFloat(e) : parseFloat(e) / GenericsUtil.maxIntPercentage
+      );
 
     if (!GenericsUtil.isHSLArray(hsl)) return;
 
@@ -212,8 +226,9 @@ class CSSUtil {
   static cssStringToHSVArray = (cssStr) => {
     cssStr = CSSUtil.__removeWhitespace(cssStr);
     if (
-      !cssStr.startsWith(CSSUtil.hsvPrefix) &&
-      cssStr.endsWith(CSSUtil.closingParanthesis)
+      !cssStr ||
+      !cssStr.startsWith(CSSUtil.hsvPrefix) ||
+      !cssStr.endsWith(CSSUtil.closingParanthesis)
     )
       return;
 
@@ -221,11 +236,25 @@ class CSSUtil {
       .replace(CSSUtil.hsvPrefix, "")
       .replace(CSSUtil.closingParanthesis, "")
       .split(CSSUtil.valueSaparator)
-      .map((e) => parseFloat(e));
+      .map((e, i) =>
+        i === 0 ? parseFloat(e) : parseFloat(e) / GenericsUtil.maxIntPercentage
+      );
 
     if (!GenericsUtil.isHSVArray(hsv)) return;
 
     return hsv;
+  };
+
+  static __removeWhitespace = (string) => {
+    if (!GenericsUtil.__isString(string)) return;
+    return string.replace(/\s+/g, "");
+  };
+
+  static __toFixedNumber = (number, decimalDigits) => {
+    if (!GenericsUtil.__isNumeric(number)) return;
+    return Number.isInteger(number)
+      ? `${number}`
+      : number.toFixed(decimalDigits).replace(/0+.$/gi, "");
   };
 }
 
