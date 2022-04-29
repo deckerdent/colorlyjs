@@ -19,9 +19,10 @@ class ColorFactory {
       hex: ColorFactory.createColorFromHex,
       rgb: ColorFactory.createColorFromRGB,
       rgba: ColorFactory.createColorFromRGBA,
-      cymk: ColorFactory.createColorFromCYMK,
+      cmyk: ColorFactory.createColorFromCMYK,
       hsl: ColorFactory.createColorFromHSL,
       hsv: ColorFactory.createColorFromHSV,
+      name: ColorFactory.createColorFromNamedCSSColor,
     };
 
     return modes[mode] ? modes[mode](a, b, c, d) : undefined;
@@ -46,10 +47,10 @@ class ColorFactory {
     return new Color(r, g, b, a);
   };
 
-  //cymk
-  static createColorFromCYMK = (c, y, m, k) => {
-    if (!GenericsUtil.isCYMKArray([c, y, m, k])) return;
-    return new Color(...ParserUtil.parseCYMKToRGBA(c, y, m, k));
+  //cmyk
+  static createColorFromCMYK = (c, m, y, k) => {
+    if (!GenericsUtil.isCMYKArray([c, m, y, k])) return;
+    return new Color(...ParserUtil.parseCMYKToRGBA(c, m, y, k));
   };
 
   //hsl
@@ -74,8 +75,8 @@ class ColorFactory {
       color = ColorFactory.createColorFromRGBACSSString(cssStr);
     } else if (cssStr.indexOf(CSSUtil.rgbPrefix) === 0) {
       color = ColorFactory.createColorFromRGBCSSString(cssStr);
-    } else if (cssStr.indexOf(CSSUtil.cymkPrefix) === 0) {
-      color = ColorFactory.createColorFromCYMKCSSString(cssStr);
+    } else if (cssStr.indexOf(CSSUtil.cmykPrefix) === 0) {
+      color = ColorFactory.createColorFromCMYKCSSString(cssStr);
     } else if (cssStr.indexOf(CSSUtil.hslPrefix) === 0) {
       color = ColorFactory.createColorFromHSLCSSString(cssStr);
     } else if (cssStr.indexOf(CSSUtil.hsvPrefix) === 0) {
@@ -104,10 +105,10 @@ class ColorFactory {
     return rgba ? ColorFactory.createColorFromRGBA(...rgba) : undefined;
   };
 
-  //cymk
-  static createColorFromCYMKCSSString = (cssStr) => {
-    let cymk = CSSUtil.cssStringToCYMKArray(cssStr);
-    return cymk ? ColorFactory.createColorFromCYMK(...cymk) : undefined;
+  //cmyk
+  static createColorFromCMYKCSSString = (cssStr) => {
+    let cmyk = CSSUtil.cssStringToCMYKArray(cssStr);
+    return cmyk ? ColorFactory.createColorFromCMYK(...cmyk) : undefined;
   };
 
   //hsl

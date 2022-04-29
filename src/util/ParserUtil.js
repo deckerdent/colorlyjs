@@ -24,10 +24,10 @@ class ParserUtil {
     return rgba;
   };
 
-  static parseHexToCYMK = (hex) => {
+  static parseHexToCMYK = (hex) => {
     if (!GenericsUtil.isHexValue(hex)) return;
 
-    return ParserUtil.parseRGBAToCYMK(...ParserUtil.parseHexToRGBA(hex));
+    return ParserUtil.parseRGBAToCMYK(...ParserUtil.parseHexToRGBA(hex));
   };
 
   static parseHexToHSL = (hex) => {
@@ -58,7 +58,7 @@ class ParserUtil {
     return GenericsUtil.convertToHarmonizedHexValue(hex);
   };
 
-  static parseRGBAToCYMK = (r = 255, g = 255, b = 255) => {
+  static parseRGBAToCMYK = (r = 255, g = 255, b = 255) => {
     let rgb = [r, g, b];
     if (!GenericsUtil.isRGBArray(rgb)) return;
 
@@ -117,42 +117,42 @@ class ParserUtil {
   /**
    * cmyk
    */
-  static parseCYMKToHex = (c = 1, m = 1, y = 1, k = 1) => {
-    let cymk = [c, y, m, k];
-    console.log(cymk);
-    if (!GenericsUtil.isCYMKArray(cymk)) return;
-    console.log("rgba", ParserUtil.parseCYMKToRGBA(...cymk));
+  static parseCMYKToHex = (c = 1, m = 1, y = 1, k = 1) => {
+    let cmyk = [c, m, y, k];
+    console.log(cmyk);
+    if (!GenericsUtil.isCMYKArray(cmyk)) return;
+    console.log("rgba", ParserUtil.parseCMYKToRGBA(...cmyk));
     console.log(
       "hex",
-      ParserUtil.parseRGBAToHex(...ParserUtil.parseCYMKToRGBA(...cymk))
+      ParserUtil.parseRGBAToHex(...ParserUtil.parseCMYKToRGBA(...cmyk))
     );
 
-    return ParserUtil.parseRGBAToHex(...ParserUtil.parseCYMKToRGBA(...cymk));
+    return ParserUtil.parseRGBAToHex(...ParserUtil.parseCMYKToRGBA(...cmyk));
   };
 
-  static parseCYMKToRGBA = (c = 1, m = 1, y = 1, k = 1) => {
-    let cymk = [c, m, y, k];
-    if (!GenericsUtil.isCYMKArray(cymk)) return;
+  static parseCMYKToRGBA = (c = 1, m = 1, y = 1, k = 1) => {
+    let cmyk = [c, m, y, k];
+    if (!GenericsUtil.isCMYKArray(cmyk)) return;
 
-    let r = GenericsUtil.maxRGB * (1 - cymk[0]) * (1 - cymk[3]),
-      g = GenericsUtil.maxRGB * (1 - cymk[2]) * (1 - cymk[3]),
-      b = GenericsUtil.maxRGB * (1 - cymk[1]) * (1 - cymk[3]);
+    let r = GenericsUtil.maxRGB * (1 - cmyk[0]) * (1 - cmyk[3]),
+      g = GenericsUtil.maxRGB * (1 - cmyk[1]) * (1 - cmyk[3]),
+      b = GenericsUtil.maxRGB * (1 - cmyk[2]) * (1 - cmyk[3]);
 
     return [r, g, b, GenericsUtil.maxDecimalPercentage];
   };
 
-  static parseCYMKToHSL = (c = 1, m = 1, y = 1, k = 1) => {
-    let cymk = [c, m, y, k];
-    if (!GenericsUtil.isCYMKArray(cymk)) return;
+  static parseCMYKToHSL = (c = 1, m = 1, y = 1, k = 1) => {
+    let cmyk = [c, m, y, k];
+    if (!GenericsUtil.isCMYKArray(cmyk)) return;
 
-    return ParserUtil.parseRGBAToHSL(...ParserUtil.parseCYMKToRGBA(...cymk));
+    return ParserUtil.parseRGBAToHSL(...ParserUtil.parseCMYKToRGBA(...cmyk));
   };
 
-  static parseCYMKToHSV = (c = 1, m = 1, y = 1, k = 1) => {
-    let cymk = [c, m, y, k];
-    if (!GenericsUtil.isCYMKArray(cymk)) return;
+  static parseCMYKToHSV = (c = 1, m = 1, y = 1, k = 1) => {
+    let cmyk = [c, m, y, k];
+    if (!GenericsUtil.isCMYKArray(cmyk)) return;
 
-    return ParserUtil.parseRGBAToHSV(...ParserUtil.parseCYMKToRGBA(...cymk));
+    return ParserUtil.parseRGBAToHSV(...ParserUtil.parseCMYKToRGBA(...cmyk));
   };
 
   /**
@@ -181,11 +181,11 @@ class ParserUtil {
     return rgba;
   };
 
-  static parseHSLToCYMK = (h = 60, s = 1, l = 1) => {
+  static parseHSLToCMYK = (h = 60, s = 1, l = 1) => {
     let hsl = [h, s, l];
     if (!GenericsUtil.isHSLArray(hsl)) return;
 
-    return ParserUtil.parseRGBAToCYMK(...ParserUtil.parseHSLToRGBA(...hsl));
+    return ParserUtil.parseRGBAToCMYK(...ParserUtil.parseHSLToRGBA(...hsl));
   };
 
   static parseHSLToHSV = (h = 60, s = 1, l = 1) => {
@@ -229,11 +229,11 @@ class ParserUtil {
     return ParserUtil.parseRGBAToHSL(...ParserUtil.parseHSVToRGBA(...hsv));
   };
 
-  static parseHSVToCYMK = (h = 60, s = 1, v = 1) => {
+  static parseHSVToCMYK = (h = 60, s = 1, v = 1) => {
     let hsv = [h, s, v];
     if (!GenericsUtil.isHSVArray(hsv)) return;
 
-    return ParserUtil.parseRGBAToCYMK(...ParserUtil.parseHSVToRGBA(...hsv));
+    return ParserUtil.parseRGBAToCMYK(...ParserUtil.parseHSVToRGBA(...hsv));
   };
 
   /**

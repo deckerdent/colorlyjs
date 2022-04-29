@@ -23,7 +23,7 @@ const rgbTestColors = [
   [255, 221, 170],
   [51, 51, 51, 1],
 ];
-const cymkTestColors = [
+const cmykTestColors = [
   [0.7, 0, 0.51, 0.34],
   [0.03, 0.8, 0, 0.29],
   [0, 0.85, 0.78, 0.12],
@@ -60,13 +60,13 @@ describe("test all hexTo... functions", () => {
     }
   );
 
-  const testHexToCYMK = hexTestColors.map((e, i) => [e, cymkTestColors[i]]);
-  test.each(testHexToCYMK)(
-    ".parseHexToCYMK(%s), expected %o",
+  const testHexToCMYK = hexTestColors.map((e, i) => [e, cmykTestColors[i]]);
+  test.each(testHexToCMYK)(
+    ".parseHexToCMYK(%s), expected %o",
     (h, expected) => {
-      let cymk = ParserUtil.parseHexToCYMK(h);
-      for (let i = 0; i < cymk.length; i++) {
-        expect(cymk[i]).toBeCloseTo(expected[i]);
+      let cmyk = ParserUtil.parseHexToCMYK(h);
+      for (let i = 0; i < cmyk.length; i++) {
+        expect(cmyk[i]).toBeCloseTo(expected[i]);
       }
     }
   );
@@ -106,13 +106,13 @@ describe("all rgb(a)To... functions", () => {
     }
   );
 
-  const testRGBAToCYMK = rgbTestColors.map((e, i) => [e, cymkTestColors[i]]);
-  test.each(testRGBAToCYMK)(
-    ".parseRGBToCYMK(%o), expected %o",
+  const testRGBAToCMYK = rgbTestColors.map((e, i) => [e, cmykTestColors[i]]);
+  test.each(testRGBAToCMYK)(
+    ".parseRGBToCMYK(%o), expected %o",
     (rgba, expected) => {
-      let cymk = ParserUtil.parseRGBAToCYMK(...rgba);
-      for (let i = 0; i > cymk.length; i++) {
-        expect(cymk[i]).toBeCloseTo(expected[i], 2);
+      let cmyk = ParserUtil.parseRGBAToCMYK(...rgba);
+      for (let i = 0; i > cmyk.length; i++) {
+        expect(cmyk[i]).toBeCloseTo(expected[i], 2);
       }
     }
   );
@@ -140,16 +140,16 @@ describe("all rgb(a)To... functions", () => {
   );
 });
 
-describe("all cymkTo... functions", () => {
+describe("all cmykTo... functions", () => {
   /*
 * Tests passed mostly, only in some cases it returned a slightly
   * different color.
   * TODO: Find out how to round rgba to hex correctly
   *
-  * const testCYMKToHex = cymkTestColors.map((e, i) => [e, hexTestColors[i]]);
-  test.each(testCYMKToHex)(
-    ".parseCYMKToHex(%o), expected %s",
-    (cymk, expected) => {
+  * const testCMYKToHex = cmykTestColors.map((e, i) => [e, hexTestColors[i]]);
+  test.each(testCMYKToHex)(
+    ".parseCMYKToHex(%o), expected %s",
+    (cmyk, expected) => {
       expected = GenericsUtil.convertToHarmonizedHexValue(expected);
       if (expected.length === 3)
         expected = expected
@@ -157,37 +157,37 @@ describe("all cymkTo... functions", () => {
           .map((e) => `${e}${e}`)
           .join("");
       expected = expected.length < 8 ? expected + "FF" : expected;
-      expect(ParserUtil.parseCYMKToHex(...cymk)).toBe(expected.toUpperCase());
+      expect(ParserUtil.parseCMYKToHex(...cmyk)).toBe(expected.toUpperCase());
     }
   );*/
 
-  const testCYMKToRGBA = cymkTestColors.map((e, i) => [e, rgbTestColors[i]]);
-  test.each(testCYMKToRGBA)(
-    ".parseCYMKToRGBA(%o), expected %o",
-    (cymk, expected) => {
-      let rgba = ParserUtil.parseCYMKToRGBA(...cymk);
+  const testCMYKToRGBA = cmykTestColors.map((e, i) => [e, rgbTestColors[i]]);
+  test.each(testCMYKToRGBA)(
+    ".parseCMYKToRGBA(%o), expected %o",
+    (cmyk, expected) => {
+      let rgba = ParserUtil.parseCMYKToRGBA(...cmyk);
       for (let i = 0; i > rgba.length; i++) {
         expect(rgba[i]).toBe(Math.round(expected[i]), 2);
       }
     }
   );
 
-  const testCYMKToHSL = cymkTestColors.map((e, i) => [e, hslTestColors[i]]);
-  test.each(testCYMKToHSL)(
-    ".parseCYMKToHSL(%o), expected %o",
-    (cymk, expected) => {
-      let hsl = ParserUtil.parseCYMKToHSL(...cymk);
+  const testCMYKToHSL = cmykTestColors.map((e, i) => [e, hslTestColors[i]]);
+  test.each(testCMYKToHSL)(
+    ".parseCMYKToHSL(%o), expected %o",
+    (cmyk, expected) => {
+      let hsl = ParserUtil.parseCMYKToHSL(...cmyk);
       for (let i = 0; i > hsl.length; i++) {
         expect(hsl[i]).toBe(expected[i], 2);
       }
     }
   );
 
-  const testCYMKToHSV = cymkTestColors.map((e, i) => [e, hsvTestColors[i]]);
-  test.each(testCYMKToHSV)(
-    ".parseCYMKToHSV(%o), expected %o",
-    (cymk, expected) => {
-      let hsv = ParserUtil.parseCYMKToHSV(...cymk);
+  const testCMYKToHSV = cmykTestColors.map((e, i) => [e, hsvTestColors[i]]);
+  test.each(testCMYKToHSV)(
+    ".parseCMYKToHSV(%o), expected %o",
+    (cmyk, expected) => {
+      let hsv = ParserUtil.parseCMYKToHSV(...cmyk);
       for (let i = 0; i > hsv.length; i++) {
         expect(hsv[i]).toBeCloseTo(expected[i], 2);
       }
@@ -227,13 +227,13 @@ describe("all hslTo... functions", () => {
     }
   );
 
-  const testHSLToCYMK = hslTestColors.map((e, i) => [e, cymkTestColors[i]]);
-  test.each(testHSLToCYMK)(
-    ".parseHSLToCYMK(%o), expected %o",
+  const testHSLToCMYK = hslTestColors.map((e, i) => [e, cmykTestColors[i]]);
+  test.each(testHSLToCMYK)(
+    ".parseHSLToCMYK(%o), expected %o",
     (hsl, expected) => {
-      let cymk = ParserUtil.parseHSLToCYMK(...hsl);
-      for (let i = 0; i > cymk.length; i++) {
-        expect(cymk[i]).toBe(expected[i], 2);
+      let cmyk = ParserUtil.parseHSLToCMYK(...hsl);
+      for (let i = 0; i > cmyk.length; i++) {
+        expect(cmyk[i]).toBe(expected[i], 2);
       }
     }
   );
@@ -282,13 +282,13 @@ describe("all hsvTo... functions", () => {
     }
   );
 
-  const testHSVToCYMK = hsvTestColors.map((e, i) => [e, cymkTestColors[i]]);
-  test.each(testHSVToCYMK)(
-    ".parseHSVToCYMK(%o), expected %o",
+  const testHSVToCMYK = hsvTestColors.map((e, i) => [e, cmykTestColors[i]]);
+  test.each(testHSVToCMYK)(
+    ".parseHSVToCMYK(%o), expected %o",
     (hsv, expected) => {
-      let cymk = ParserUtil.parseHSLToCYMK(...hsv);
-      for (let i = 0; i > cymk.length; i++) {
-        expect(cymk[i]).toBe(expected[i], 2);
+      let cmyk = ParserUtil.parseHSLToCMYK(...hsv);
+      for (let i = 0; i > cmyk.length; i++) {
+        expect(cmyk[i]).toBe(expected[i], 2);
       }
     }
   );

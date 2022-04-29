@@ -60,7 +60,7 @@ const rgbaTestParams = [
   0.987654321, 5,
 ].map((e, i) => [...rgbTestParams[i], e]);
 
-const cymkTestParams = [
+const cmykTestParams = [
   [0, 0, 0, 0],
   [1, 1, 1, 1],
   [0.2, 0.4, 0.6, 0.8],
@@ -223,7 +223,7 @@ describe(".toRGBCSSString(), .toRGBACSSString(), .cssStringToRGBArray(), .cssStr
 });
 
 /**
- * cymk
+ * cmyk
  * [0, 0, 0, 0],
   [1, 1, 1, 1],
   [0.2, 0.4, 0.6, 0.8],
@@ -232,29 +232,29 @@ describe(".toRGBCSSString(), .toRGBACSSString(), .cssStringToRGBArray(), .cssStr
   [1, 1, 0.5, 2],
  */
 
-const testCYMKFunctions = [
+const testCMYKFunctions = [
   "cmyk(0%, 0%, 0%, 0%)",
   "cmyk(100%, 100%, 100%, 100%)",
   "cmyk(20%, 40%, 60%, 80%)",
   "cmyk(40%, 30%, 20%, 10%)",
   undefined,
   undefined,
-].map((e, i) => [...cymkTestParams[i], e]);
+].map((e, i) => [...cmykTestParams[i], e]);
 
-describe(".toCYMKCSSString(), .cssStringToCYMKArray()", () => {
-  test.each(testCYMKFunctions)(
-    ".toCYMKCSSString(%f, %f, %f, %f), expected %s",
+describe(".toCMYKCSSString(), .cssStringToCMYKArray()", () => {
+  test.each(testCMYKFunctions)(
+    ".toCMYKCSSString(%f, %f, %f, %f), expected %s",
     (a, b, c, d, expected) => {
-      expect(CSSUtil.toCYMKCSSString(a, b, c, d)).toBe(expected);
+      expect(CSSUtil.toCMYKCSSString(a, b, c, d)).toBe(expected);
     }
   );
 
-  test.each(testCYMKFunctions)(
-    ".toCYMKCSSString(%f, %f, %f, %f), expected %s",
+  test.each(testCMYKFunctions)(
+    ".toCMYKCSSString(%f, %f, %f, %f), expected %s",
     (a, b, c, d, expected) => {
-      let cymkCss = CSSUtil.toCYMKCSSString(a, b, c, d);
+      let cmykCss = CSSUtil.toCMYKCSSString(a, b, c, d);
       expected = expected ? [a, b, c, d] : expected;
-      expect(CSSUtil.cssStringToCYMKArray(cymkCss)).toStrictEqual(expected);
+      expect(CSSUtil.cssStringToCMYKArray(cmykCss)).toStrictEqual(expected);
     }
   );
 });

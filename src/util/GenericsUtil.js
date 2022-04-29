@@ -437,7 +437,7 @@ class GenericsUtil {
   };
 
   /**
-   * cymk
+   * cmyk
    */
 
   /**
@@ -445,7 +445,7 @@ class GenericsUtil {
    * @param {*} param
    * @returns boolean
    */
-  static isCYMKValue = (param) => {
+  static isCMYKValue = (param) => {
     return GenericsUtil.isDecimalPercentage(param);
   };
 
@@ -455,10 +455,10 @@ class GenericsUtil {
    * @param {*} param
    * @returns boolean
    */
-  static isCYMKArray = (param) => {
+  static isCMYKArray = (param) => {
     return (
       GenericsUtil.isFourElementsArray(param) &&
-      param.every((e) => GenericsUtil.isCYMKValue(e))
+      param.every((e) => GenericsUtil.isCMYKValue(e))
     );
   };
 

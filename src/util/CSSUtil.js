@@ -10,7 +10,7 @@ class CSSUtil {
   static rgbPrefix = "rgb(";
   static rgbaPrefix = "rgba(";
 
-  static cymkPrefix = "cmyk(";
+  static cmykPrefix = "cmyk(";
 
   static hslPrefix = "hsl(";
 
@@ -64,14 +64,14 @@ class CSSUtil {
     return rgba;
   };
 
-  //cymk
-  static toCYMKCSSString = (c = 1, y = 1, m = 1, k = 1) => {
-    let cymk = [c, y, m, k];
-    if (!GenericsUtil.isCYMKArray(cymk)) return;
+  //cmyk
+  static toCMYKCSSString = (c = 1, m = 1, y = 1, k = 1) => {
+    let cmyk = [c, m, y, k];
+    if (!GenericsUtil.isCMYKArray(cmyk)) return;
 
-    cymk =
-      CSSUtil.cymkPrefix +
-      cymk
+    cmyk =
+      CSSUtil.cmykPrefix +
+      cmyk
         .map(
           (e) =>
             CSSUtil.__toFixedNumber(
@@ -82,7 +82,7 @@ class CSSUtil {
         .join(CSSUtil.valueSaparator + " ") +
       CSSUtil.closingParanthesis;
 
-    return cymk;
+    return cmyk;
   };
 
   //hsl
@@ -178,25 +178,25 @@ class CSSUtil {
     return rgba;
   };
 
-  //cymk
-  static cssStringToCYMKArray = (cssStr) => {
+  //cmyk
+  static cssStringToCMYKArray = (cssStr) => {
     cssStr = CSSUtil.__removeWhitespace(cssStr);
     if (
       !cssStr ||
-      !cssStr.startsWith(CSSUtil.cymkPrefix) ||
+      !cssStr.startsWith(CSSUtil.cmykPrefix) ||
       !cssStr.endsWith(CSSUtil.closingParanthesis)
     )
       return;
 
-    let cymk = cssStr
-      .replace(CSSUtil.cymkPrefix, "")
+    let cmyk = cssStr
+      .replace(CSSUtil.cmykPrefix, "")
       .replace(CSSUtil.closingParanthesis, "")
       .split(CSSUtil.valueSaparator)
       .map((e) => parseFloat(e) / GenericsUtil.maxIntPercentage);
 
-    if (!GenericsUtil.isCYMKArray(cymk)) return;
+    if (!GenericsUtil.isCMYKArray(cmyk)) return;
 
-    return cymk;
+    return cmyk;
   };
 
   //HSL

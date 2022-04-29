@@ -42,27 +42,27 @@ class Color {
   addBlue = (b) => {
     this.setBlue(b + this.b);
   };
-  //cymk
+  //cmyk
   addCyan = (c) => {
-    let cymk = ParserUtil.parseRGBAToCYMK(this.r, this.g, this.b);
+    let cmyk = ParserUtil.parseRGBAToCMYK(this.r, this.g, this.b);
 
-    this.setCyan(cymk[0] + c);
+    this.setCyan(cmyk[0] + c);
   };
 
   addYellow = (y) => {
-    let cymk = ParserUtil.parseRGBAToCYMK(this.r, this.g, this.b);
+    let cmyk = ParserUtil.parseRGBAToCMYK(this.r, this.g, this.b);
 
-    this.setYellow(cymk[1] + y);
+    this.setYellow(cmyk[2] + y);
   };
   addMagenta = (m) => {
-    let cymk = ParserUtil.parseRGBAToCYMK(this.r, this.g, this.b);
+    let cmyk = ParserUtil.parseRGBAToCMYK(this.r, this.g, this.b);
 
-    this.setMagenta(cymk[2] + m);
+    this.setMagenta(cmyk[1] + m);
   };
   addBlack = (k) => {
-    let cymk = ParserUtil.parseRGBAToCYMK(this.r, this.g, this.b);
+    let cmyk = ParserUtil.parseRGBAToCMYK(this.r, this.g, this.b);
 
-    this.setBlack(cymk[3] + k);
+    this.setBlack(cmyk[3] + k);
   };
   //hsl, hsv
   addHue = (h) => {
@@ -119,24 +119,24 @@ class Color {
   getBlue = () => {
     return this.b;
   };
-  //cymk
+  //cmyk
   getCyan = () => {
-    let [c, y, m, k] = ParserUtil.parseRGBAToCYMK(this.r, this.g, this.b);
+    let [c, m, y, k] = ParserUtil.parseRGBAToCMYK(this.r, this.g, this.b);
     return c;
   };
 
   getYellow = () => {
-    let [c, y, m, k] = ParserUtil.parseRGBAToCYMK(this.r, this.g, this.b);
+    let [c, m, y, k] = ParserUtil.parseRGBAToCMYK(this.r, this.g, this.b);
     return y;
   };
 
   getMagenta = () => {
-    let [c, y, m, k] = ParserUtil.parseRGBAToCYMK(this.r, this.g, this.b);
+    let [c, m, y, k] = ParserUtil.parseRGBAToCMYK(this.r, this.g, this.b);
     return m;
   };
 
   getBlack = () => {
-    let [c, y, m, k] = ParserUtil.parseRGBAToCYMK(this.r, this.g, this.b);
+    let [c, m, y, k] = ParserUtil.parseRGBAToCMYK(this.r, this.g, this.b);
     return k;
   };
   //hsl, hsv
@@ -177,75 +177,104 @@ class Color {
   //rgb
   setRed = (r) => {
     this.r =
-      r < GenericsUtil.zero
+      r && r < GenericsUtil.zero
         ? GenericsUtil.zero
-        : r > GenericsUtil.maxRGB
+        : r && r > GenericsUtil.maxRGB
         ? GenericsUtil.maxRGB
         : r;
   };
 
   setGreen = (g) => {
     this.g =
-      g < GenericsUtil.zero
+      g && g < GenericsUtil.zero
         ? GenericsUtil.zero
-        : g > GenericsUtil.maxRGB
+        : g && g > GenericsUtil.maxRGB
         ? GenericsUtil.maxRGB
         : g;
   };
 
   setBlue = (b) => {
     this.b =
-      b < GenericsUtil.zero
+      b && b < GenericsUtil.zero
         ? GenericsUtil.zero
-        : b > GenericsUtil.maxRGB
+        : b && b > GenericsUtil.maxRGB
         ? GenericsUtil.maxRGB
         : b;
   };
 
-  //cymk
+  //cmyk
   setCyan = (c) => {
-    let cymk = ParserUtil.parseRGBAToCYMK(this.r, this.g, this.b);
+    let cmyk = ParserUtil.parseRGBAToCMYK(this.r, this.g, this.b);
 
-    cymk[0] = c;
+    cmyk[0] =
+      c && c < GenericsUtil.zero
+        ? GenericsUtil.zero
+        : c && c > GenericsUtil.maxDecimalPercentage
+        ? GenericsUtil.maxDecimalPercentage
+        : c;
 
-    let [r, g, b] = ParserUtil.parseCYMKToRGBA(...cymk);
+    let rgb = ParserUtil.parseCMYKToRGBA(...cmyk);
+    if (!rgb) return;
 
+    let [r, g, b] = rgb;
     this.setRed(r);
     this.setGreen(g);
     this.setBlue(b);
   };
 
   setYellow = (y) => {
-    let cymk = ParserUtil.parseRGBAToCYMK(this.r, this.g, this.b);
+    let cmyk = ParserUtil.parseRGBAToCMYK(this.r, this.g, this.b);
 
-    cymk[1] = y;
+    cmyk[2] =
+      y && y < GenericsUtil.zero
+        ? GenericsUtil.zero
+        : y && y > GenericsUtil.maxDecimalPercentage
+        ? GenericsUtil.maxDecimalPercentage
+        : y;
 
-    let [r, g, b] = ParserUtil.parseCYMKToRGBA(...cymk);
+    let rgb = ParserUtil.parseCMYKToRGBA(...cmyk);
+    if (!rgb) return;
 
+    let [r, g, b] = rgb;
     this.setRed(r);
     this.setGreen(g);
     this.setBlue(b);
   };
 
   setMagenta = (m) => {
-    let cymk = ParserUtil.parseRGBAToCYMK(this.r, this.g, this.b);
+    let cmyk = ParserUtil.parseRGBAToCMYK(this.r, this.g, this.b);
 
-    cymk[2] = m;
+    cmyk[1] =
+      m && m < GenericsUtil.zero
+        ? GenericsUtil.zero
+        : m && m > GenericsUtil.maxDecimalPercentage
+        ? GenericsUtil.maxDecimalPercentage
+        : m;
 
-    let [r, g, b] = ParserUtil.parseCYMKToRGBA(...cymk);
+    let rgb = ParserUtil.parseCMYKToRGBA(...cmyk);
+    if (!rgb) return;
 
+    let [r, g, b] = rgb;
     this.setRed(r);
     this.setGreen(g);
     this.setBlue(b);
   };
 
   setBlack = (k) => {
-    let cymk = ParserUtil.parseRGBAToCYMK(this.r, this.g, this.b);
+    let cmyk = ParserUtil.parseRGBAToCMYK(this.r, this.g, this.b);
 
-    cymk[3] = k;
+    cmyk[3] =
+      k && k < GenericsUtil.zero
+        ? GenericsUtil.zero
+        : k && k > GenericsUtil.maxDecimalPercentage
+        ? GenericsUtil.maxDecimalPercentage
+        : k;
 
-    let [r, g, b] = ParserUtil.parseCYMKToRGBA(...cymk);
+    let rgb = ParserUtil.parseCMYKToRGBA(...cmyk);
 
+    if (!rgb) return;
+
+    let [r, g, b] = rgb;
     this.setRed(r);
     this.setGreen(g);
     this.setBlue(b);
@@ -254,10 +283,17 @@ class Color {
   setHue = (h) => {
     let hsl = ParserUtil.parseRGBAToHSL(this.r, this.g, this.b);
 
-    hsl[0] = h;
+    hsl[0] =
+      h && h < GenericsUtil.zero
+        ? GenericsUtil.zero
+        : h && h > GenericsUtil.maxDecimalPercentage
+        ? GenericsUtil.maxDecimalPercentage
+        : h;
 
-    let [r, g, b] = ParserUtil.parseHSLToRGB(...hsl);
+    let rgb = ParserUtil.parseHSLToRGBA(...hsl);
+    if (!rgb) return;
 
+    let [r, g, b] = rgb;
     this.setRed(r);
     this.setGreen(g);
     this.setBlue(b);
@@ -266,10 +302,17 @@ class Color {
   setSaturation = (s) => {
     let hsl = ParserUtil.parseRGBAToHSL(this.r, this.g, this.b);
 
-    hsl[1] = s;
+    hsl[1] =
+      s && s < GenericsUtil.zero
+        ? GenericsUtil.zero
+        : s && s > GenericsUtil.maxDecimalPercentage
+        ? GenericsUtil.maxDecimalPercentage
+        : s;
 
-    let [r, g, b] = ParserUtil.parseHSLToRGB(...hsl);
+    let rgb = ParserUtil.parseHSLToRGBA(...hsl);
+    if (!rgb) return;
 
+    let [r, g, b] = rgb;
     this.setRed(r);
     this.setGreen(g);
     this.setBlue(b);
@@ -278,10 +321,17 @@ class Color {
   setLightness = (l) => {
     let hsl = ParserUtil.parseRGBAToHSL(this.r, this.g, this.b);
 
-    hsl[2] = l;
+    hsl[2] =
+      l && l < GenericsUtil.zero
+        ? GenericsUtil.zero
+        : l && l > GenericsUtil.maxDecimalPercentage
+        ? GenericsUtil.maxDecimalPercentage
+        : l;
 
-    let [r, g, b] = ParserUtil.parseHSLToRGB(...hsl);
+    let rgb = ParserUtil.parseHSLToRGBA(...hsl);
+    if (!rgb) return;
 
+    let [r, g, b] = rgb;
     this.setRed(r);
     this.setGreen(g);
     this.setBlue(b);
@@ -290,10 +340,17 @@ class Color {
   setValue = (v) => {
     let hsv = ParserUtil.parseRGBAToHSV(this.r, this.g, this.b);
 
-    hsv[2] = v;
+    hsv[2] =
+      v && v < GenericsUtil.zero
+        ? GenericsUtil.zero
+        : v && v > GenericsUtil.maxDecimalPercentage
+        ? GenericsUtil.maxDecimalPercentage
+        : 0;
 
-    let [r, g, b] = ParserUtil.parseHSVToRGB(...hsv);
+    let rgb = ParserUtil.parseHSVToRGBA(...hsv);
+    if (!rgb) return;
 
+    let [r, g, b] = rgb;
     this.setRed(r);
     this.setGreen(g);
     this.setBlue(b);
@@ -303,9 +360,9 @@ class Color {
   //TODO: setHexOpacity = (o) => {};
   setDecimalOpacity = (o) => {
     this.a =
-      o < GenericsUtil.zero
+      o && o < GenericsUtil.zero
         ? GenericsUtil.zero
-        : o > GenericsUtil.maxDecimalPercentage
+        : o && o > GenericsUtil.maxDecimalPercentage
         ? GenericsUtil.maxDecimalPercentage
         : o;
   };
@@ -347,19 +404,20 @@ class Color {
   toRGBACSSString = () => {
     return CSSUtil.toRGBACSSString(this.r, this.g, this.b, this.a);
   };
-  //cymk
-  toCYMKArray = () => {
-    return ParserUtil.parseRGBAToCYMK(this.r, this.g, this.b);
+  //cmyk
+  toCMYKArray = () => {
+    return ParserUtil.parseRGBAToCMYK(this.r, this.g, this.b);
   };
-  toCYMKCSSString = () => {
-    let cymk = ParserUtil.parseRGBAToCYMK(this.r, this.g, this.b);
-    return CSSUtil.toCYMKCSSString(...cymk);
+  toCMYKCSSString = () => {
+    let cmyk = ParserUtil.parseRGBAToCMYK(this.r, this.g, this.b);
+    return CSSUtil.toCMYKCSSString(...cmyk);
   };
   //hsl
   toHSLArray = () => {
     return ParserUtil.parseRGBAToHSL(this.r, this.g, this.b);
   };
-  toHSLSSString = () => {
+
+  toHSLCSSString = () => {
     let hsl = ParserUtil.parseRGBAToHSL(this.r, this.g, this.b);
     return CSSUtil.toHSLCSSString(...hsl);
   };

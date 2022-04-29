@@ -635,10 +635,10 @@ test.each(testIsRGBAArray)(
 );
 
 /**
- * cymk
+ * cmyk
  */
 
-const cymkTestParams = [
+const cmykTestParams = [
   [0, 0, 0, 0],
   [1, 1, 1, 1],
   [0.2, 0.4, 0.6, 0.8],
@@ -647,15 +647,15 @@ const cymkTestParams = [
   [1, 1, 0.5, 2],
 ];
 
-const testIsCYMKArray = [true, true, true, true, false, false].map((e, i) => [
-  ...cymkTestParams[i],
+const testIsCMYKArray = [true, true, true, true, false, false].map((e, i) => [
+  ...cmykTestParams[i],
   e,
 ]);
 
-test.each(testIsCYMKArray)(
-  ".isCYMKArray(%f, %f, %f, %f), expect %i",
-  (c, y, m, k, expected) => {
-    expect(GenericsUtil.isCYMKArray([c, y, m, k])).toBe(expected);
+test.each(testIsCMYKArray)(
+  ".isCMYKArray(%f, %f, %f, %f), expect %i",
+  (c, m, y, k, expected) => {
+    expect(GenericsUtil.isCMYKArray([c, m, y, k])).toBe(expected);
   }
 );
 
