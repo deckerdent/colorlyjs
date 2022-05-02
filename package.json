@@ -2,10 +2,12 @@
   "name": "colorly",
   "type": "module",
   "version": "0.1.0",
-  "description": "this package is a library for parsing colors within the sRGB color space. it includes rgb(a), hsl(a), hsv(a), hex and cymk. It mainly focuses on web standards, which is why it has build in css support. However, it may be used in any application that follows the css color standards level 4. ",
-  "main": "index.js",
+  "description": "this package is a library for parsing colors within the sRGB color space. it includes rgb(a), hsl(a), hsv(a), hex and cmyk. It mainly focuses on web standards, which is why it has build in css support. However, it may be used in any application that follows the css color standards level 4. ",
+  "main": "./dist/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "npx babel src --out-dir dist",
+    "prepublish": "npx run build"
   },
   "repository": {
     "type": "git",
@@ -40,11 +42,10 @@
     "url": "https://github.com/deckerdent/colorly/issues"
   },
   "homepage": "https://github.com/deckerdent/colorly#readme",
-  "dependencies": {
-    "jest": "^27.5.1"
-  },
   "devDependencies": {
-    "@babel/core": "^7.17.9",
-    "@babel/preset-env": "^7.16.11"
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.17.10",
+    "@babel/preset-env": "^7.17.10",
+    "jest": "^27.5.1"
   }
 }
