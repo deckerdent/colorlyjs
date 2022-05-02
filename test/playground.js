@@ -6,187 +6,151 @@
  */
 
 import ColorFactory from "../src/ColorFactory.js";
+import CSSColors from "../src/util/CSSColors.js";
 
 //initializing color
 
-console.log(
-  "############## initializing color from hex string #445e87 ##################"
-);
+console.log("############## initializing radnomized test ##################");
 
-const color = ColorFactory.createColorFromHex("#445E87");
+let modes = ["css", "hex", "rgb", "rgba", "cmyk", "hsl", "hsv", "name"];
+let val = [
+  "red",
+  "green",
+  "blue",
+  "cyan",
+  "magenta",
+  "yellow",
+  "black",
+  "hue",
+  "saturation",
+  "lightness",
+  "value",
+  "opacity",
+];
 
-console.log("hexArr", color.toHexArray());
-console.log("hexStr", color.toHexCSSString());
+for (let i = 0; i <= 1000; i++) {
+  let mode = getRandomInt(0, modes.length);
+  let color = getInitialColor(mode);
 
-console.log("rgbArr", color.toRGBArray());
-console.log("rgbStr", color.toRGBCSSString());
-console.log("rgbaArr", color.toRGBAArray());
-console.log("rgbStr", color.toRGBACSSString());
+  console.log(
+    `[iteration ${i}, color created through mode ${modes[mode]} ] - initiated color: ${color} `
+  );
 
-console.log("cymkArr", color.toCYMKArray());
-console.log("cymkStr", color.toCYMKCSSString());
+  for (let j = 0; j <= 1000; j++) {
+    let valMode = getRandomInt(0, val.length);
+    let sign = getRandomInt(0, 2) === 0 ? -1 : 1;
+    switch (valMode) {
+      case 0:
+        color.addRed(sign * getRandomArbitrary(0, 256));
+      case 1:
+        color.addGreen(sign * getRandomArbitrary(0, 256));
+      case 0:
+        color.addBlue(sign * getRandomArbitrary(0, 256));
+      case 0:
+        color.addCyan(sign * Math.random());
+      case 0:
+        color.addMagenta(sign * Math.random());
+      case 0:
+        color.addYellow(sign * Math.random());
+      case 0:
+        color.addBlack(sign * Math.random());
+      case 0:
+        color.addHue(sign * getRandomArbitrary(0, 361));
+      case 0:
+        color.addSaturation(sign * Math.random());
+      case 0:
+        color.addLightness(sign * Math.random());
+      case 0:
+        color.addValue(sign * Math.random());
+      case 0:
+        color.addDecimalOpacity(sign * Math.random());
+    }
+    console.log(
+      `[iteration ${i}.${j}, adding mode ${val[valMode]} ] - color: ${color} `
+    );
+  }
+}
 
-console.log("hslArr", color.toHSLArray());
-console.log("hslStr", color.toHSLSSString());
+function getInitialColor(mode) {
+  let modes = ["css", "hex", "rgb", "rgba", "cmyk", "hsl", "hsv", "name"];
+  let initialColor;
+  switch (mode) {
+    case 0:
+      initialColor = ColorFactory.createColor(
+        modes[mode],
+        "rgb(" +
+          getRandomArbitrary(0, 256) +
+          "," +
+          getRandomArbitrary(0, 256) +
+          "," +
+          getRandomArbitrary(0, 256) +
+          ")"
+      );
+      break;
+    case 1:
+      while (true) {
+        initialColor = getRandomInt(0, 4294967295).toString(16);
+        if ([3, 4, 6, 8].contains[initialColor.length]) break;
+      }
+      initialColor = ColorFactory.createColor(modes[mode], initialColor);
+      break;
+    case 2:
+      initialColor = ColorFactory.createColor(
+        modes[mode],
+        getRandomArbitrary(0, 256),
+        getRandomArbitrary(0, 256),
+        getRandomArbitrary(0, 256)
+      );
+    case 3:
+      initialColor = ColorFactory.createColor(
+        modes[mode],
+        getRandomArbitrary(0, 256),
+        getRandomArbitrary(0, 256),
+        getRandomArbitrary(0, 256),
+        Math.random()
+      );
+    case 4:
+      initialColor = ColorFactory.createColor(
+        modes[mode],
+        Math.random(),
+        Math.random(),
+        Math.random(),
+        Math.random()
+      );
+    case 5:
+      initialColor = ColorFactory.createColor(
+        modes[mode],
+        getRandomArbitrary(0, 361),
+        Math.random(),
+        Math.random()
+      );
+    case 6:
+      initialColor = ColorFactory.createColor(
+        modes[mode],
+        getRandomArbitrary(0, 361),
+        Math.random(),
+        Math.random()
+      );
+    case 7:
+      let CSSColorsKeys = Object.keys(CSSColors);
+      let initialColorKey =
+        CSSColorsKeys[getRandomInt(0, CSSColorsKeys.length - 1)];
+      initialColor = CSSColors[initialColorKey];
+      break;
 
-console.log("hsvArr", color.toHSVArray());
-console.log("hsvStr", color.toHSVCSSString());
+    default:
+      break;
+  }
 
-console.log("r", color.getRed());
-console.log("g", color.getBlue());
-console.log("b", color.getGreen());
+  return initialColor;
+}
 
-console.log("c", color.getCyan());
-console.log("y", color.getYellow());
-console.log("m", color.getMagenta());
-console.log("k", color.getBlack());
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 
-console.log("hue", color.getHue());
-console.log("sat", color.getSaturation());
-console.log("light", color.getLightness());
-console.log("val", color.getValue());
-
-console.log("intOp", color.getIntOpacity());
-console.log("decOp", color.getDecimalOpacity());
-
-//adding values
-
-console.log("############## adding values ##################");
-
-console.log("addRed", color.addRed(10));
-console.log("r", color.getRed());
-console.log("hexStr", color.toHexCSSString());
-console.log("rgbStr", color.toRGBCSSString());
-console.log("rgbStr", color.toRGBACSSString());
-console.log("cymkStr", color.toCYMKCSSString());
-console.log("hslStr", color.toHSLSSString());
-console.log("hsvStr", color.toHSVCSSString());
-
-console.log("addBlue", color.addBlue(10));
-console.log("g", color.getBlue());
-console.log("hexStr", color.toHexCSSString());
-console.log("rgbStr", color.toRGBCSSString());
-console.log("rgbStr", color.toRGBACSSString());
-console.log("cymkStr", color.toCYMKCSSString());
-console.log("hslStr", color.toHSLSSString());
-console.log("hsvStr", color.toHSVCSSString());
-
-console.log("addGreen", color.addGreen(10));
-console.log("b", color.getGreen());
-console.log("hexStr", color.toHexCSSString());
-console.log("rgbStr", color.toRGBCSSString());
-console.log("rgbStr", color.toRGBACSSString());
-console.log("cymkStr", color.toCYMKCSSString());
-console.log("hslStr", color.toHSLSSString());
-console.log("hsvStr", color.toHSVCSSString());
-
-console.log("addCyan", color.addCyan(0.2));
-console.log("c", color.getCyan());
-console.log("hexStr", color.toHexCSSString());
-console.log("rgbStr", color.toRGBCSSString());
-console.log("rgbStr", color.toRGBACSSString());
-console.log("cymkStr", color.toCYMKCSSString());
-console.log("hslStr", color.toHSLSSString());
-console.log("hsvStr", color.toHSVCSSString());
-
-console.log("addYello", color.addYellow(0.2));
-console.log("y", color.getYellow());
-console.log("hexStr", color.toHexCSSString());
-console.log("rgbStr", color.toRGBCSSString());
-console.log("rgbStr", color.toRGBACSSString());
-console.log("cymkStr", color.toCYMKCSSString());
-console.log("hslStr", color.toHSLSSString());
-console.log("hsvStr", color.toHSVCSSString());
-
-console.log("addMagenta", color.add(0.2));
-console.log("m", color.getMagenta());
-console.log("hexStr", color.toHexCSSString());
-console.log("rgbStr", color.toRGBCSSString());
-console.log("rgbStr", color.toRGBACSSString());
-console.log("cymkStr", color.toCYMKCSSString());
-console.log("hslStr", color.toHSLSSString());
-console.log("hsvStr", color.toHSVCSSString());
-
-console.log("addBlack", color.add(0.2));
-console.log("k", color.getBlack());
-console.log("hexStr", color.toHexCSSString());
-console.log("rgbStr", color.toRGBCSSString());
-console.log("rgbStr", color.toRGBACSSString());
-console.log("cymkStr", color.toCYMKCSSString());
-console.log("hslStr", color.toHSLSSString());
-console.log("hsvStr", color.toHSVCSSString());
-
-console.log("addHue", color.addHue(10));
-console.log("hue", color.getHue());
-console.log("hexStr", color.toHexCSSString());
-console.log("rgbStr", color.toRGBCSSString());
-console.log("rgbStr", color.toRGBACSSString());
-console.log("cymkStr", color.toCYMKCSSString());
-console.log("hslStr", color.toHSLSSString());
-console.log("hsvStr", color.toHSVCSSString());
-
-console.log("addSaturation", color.addSaturation(0.2));
-console.log("sat", color.getSaturation());
-console.log("hexStr", color.toHexCSSString());
-console.log("rgbStr", color.toRGBCSSString());
-console.log("rgbStr", color.toRGBACSSString());
-console.log("cymkStr", color.toCYMKCSSString());
-console.log("hslStr", color.toHSLSSString());
-console.log("hsvStr", color.toHSVCSSString());
-
-console.log("addLightness", color.addLightness(0.2));
-console.log("light", color.getLightness());
-console.log("hexStr", color.toHexCSSString());
-console.log("rgbStr", color.toRGBCSSString());
-console.log("rgbStr", color.toRGBACSSString());
-console.log("cymkStr", color.toCYMKCSSString());
-console.log("hslStr", color.toHSLSSString());
-console.log("hsvStr", color.toHSVCSSString());
-
-console.log("addValue", color.addValue(0.2));
-console.log("val", color.getValue());
-console.log("hexStr", color.toHexCSSString());
-console.log("rgbStr", color.toRGBCSSString());
-console.log("rgbStr", color.toRGBACSSString());
-console.log("cymkStr", color.toCYMKCSSString());
-console.log("hslStr", color.toHSLSSString());
-console.log("hsvStr", color.toHSVCSSString());
-
-console.log("addOpacity", color.addDecimalOpacity(-0.1));
-console.log("addOpacity", color.addIntOpacity(-5));
-console.log("intOp", color.getIntOpacity());
-console.log("decOp", color.getDecimalOpacity());
-
-console.log("hexArr", color.toHexArray());
-console.log("hexStr", color.toHexCSSString());
-
-console.log("rgbArr", color.toRGBArray());
-console.log("rgbStr", color.toRGBCSSString());
-console.log("rgbaArr", color.toRGBAArray());
-console.log("rgbStr", color.toRGBACSSString());
-
-console.log("cymkArr", color.toCYMKArray());
-console.log("cymkStr", color.toCYMKCSSString());
-
-console.log("hslArr", color.toHSLArray());
-console.log("hslStr", color.toHSLSSString());
-
-console.log("hsvArr", color.toHSVArray());
-console.log("hsvStr", color.toHSVCSSString());
-
-console.log("r", color.getRed());
-console.log("g", color.getBlue());
-console.log("b", color.getGreen());
-
-console.log("c", color.getCyan());
-console.log("y", color.getYellow());
-console.log("m", color.getMagenta());
-console.log("k", color.getBlack());
-
-console.log("hue", color.getHue());
-console.log("sat", color.getSaturation());
-console.log("light", color.getLightness());
-console.log("val", color.getValue());
-
-console.log("intOp", color.getIntOpacity());
-console.log("decOp", color.getDecimalOpacity());
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}

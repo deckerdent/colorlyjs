@@ -52,7 +52,7 @@ class ParserUtil {
     rgba[3] *= GenericsUtil.maxRGB;
 
     let hex = rgba
-      .map((e) => Math.round(e).toString(GenericsUtil.hex))
+      .map((e) => Math.round(e).toString(GenericsUtil.hex).padStart(2, 0))
       .join("");
 
     return GenericsUtil.convertToHarmonizedHexValue(hex);
@@ -63,6 +63,8 @@ class ParserUtil {
     if (!GenericsUtil.isRGBArray(rgb)) return;
 
     rgb = rgb.map((e) => GenericsUtil.normalizeRGBValue(e));
+
+    if (Math.max(...rgb) === 0) return [0, 0, 0, 1];
 
     let k = 1 - Math.max(...rgb),
       c = (1 - rgb[0] - k) / (1 - k),
@@ -119,13 +121,8 @@ class ParserUtil {
    */
   static parseCMYKToHex = (c = 1, m = 1, y = 1, k = 1) => {
     let cmyk = [c, m, y, k];
-    console.log(cmyk);
+
     if (!GenericsUtil.isCMYKArray(cmyk)) return;
-    console.log("rgba", ParserUtil.parseCMYKToRGBA(...cmyk));
-    console.log(
-      "hex",
-      ParserUtil.parseRGBAToHex(...ParserUtil.parseCMYKToRGBA(...cmyk))
-    );
 
     return ParserUtil.parseRGBAToHex(...ParserUtil.parseCMYKToRGBA(...cmyk));
   };

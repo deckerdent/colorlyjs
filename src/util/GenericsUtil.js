@@ -16,7 +16,7 @@ class GenericsUtil {
 
   static hex = 16;
   static hexPrefix = "#";
-  static validHexLength = [3, 6, 8];
+  static validHexLength = [3, 4, 6, 8];
   static hexNoTransparency = "FF";
 
   static zero = 0;
@@ -132,8 +132,8 @@ class GenericsUtil {
       param = GenericsUtil.convertHexIntValueToString(param);
 
     return (
-      GenericsUtil.__getHexRegex(GenericsUtil.validHexLength[1]).test(param) ||
-      GenericsUtil.__getHexRegexWithPrefix(GenericsUtil.validHexLength[1]).test(
+      GenericsUtil.__getHexRegex(GenericsUtil.validHexLength[2]).test(param) ||
+      GenericsUtil.__getHexRegexWithPrefix(GenericsUtil.validHexLength[2]).test(
         param
       )
     );
@@ -149,8 +149,8 @@ class GenericsUtil {
     if (GenericsUtil.isHexIntValue(param))
       param = GenericsUtil.convertHexIntValueToString(param);
     return (
-      GenericsUtil.__getHexRegex(GenericsUtil.validHexLength[2]).test(param) ||
-      GenericsUtil.__getHexRegexWithPrefix(GenericsUtil.validHexLength[2]).test(
+      GenericsUtil.__getHexRegex(GenericsUtil.validHexLength[3]).test(param) ||
+      GenericsUtil.__getHexRegexWithPrefix(GenericsUtil.validHexLength[3]).test(
         param
       )
     );
@@ -231,6 +231,7 @@ class GenericsUtil {
 
     let conversionObjectLiteral = {
       3: GenericsUtil.__convertThreeDigitHexToArray,
+      4: GenericsUtil.__convertThreeDigitHexToArray,
       6: GenericsUtil.__convertSixOrEightDigitHexToArray,
       8: GenericsUtil.__convertSixOrEightDigitHexToArray,
     };
@@ -534,6 +535,49 @@ class GenericsUtil {
   /**
    * Generics
    */
+  /**
+   *
+   * @param {*} number
+   * @param {*} precision
+   * @returns
+   */
+  static roundNumberToInfinity = (number, precision) => {
+    if (!GenericsUtil.__isNumeric(number)) return;
+    if (Number.isInteger(number)) return number;
+    if (precision === 0) return Math.ceil(number);
+
+    let numberString = number.toFixed(precision + 3); // we need some more digits than the expected precision
+    let [integer, decimalPoints] = numberString.split(".");
+    decimalPoints = decimalPoints.replace(/0*$/gi, "");
+
+    if (decimalPoints.length === 0) return parseInt(integer);
+    if (decimalPoints.length <= precision)
+      return parseFloat(`${integer}.${decimalPoints}`);
+
+    let keptDecimalPoints = decimalPoints.substr(0, precision),
+      removedDecimalPoints = decimalPoints.substr(
+        precision,
+        decimalPoints.length
+      );
+
+    let splitDecimalPoints = /[0-9]/gi;
+    let keptArray = keptDecimalPoints
+        .match(splitDecimalPoints)
+        .map((e) => parseInt(e)),
+      removedArray = removedDecimalPoints
+        .match(splitDecimalPoints)
+        .map((e) => parseInt(e));
+
+    if (
+      (/^5[0]*$/gi.test(removedDecimalPoints) &&
+        keptArray[keptArray.length - 1] % 2 === 1) ||
+      (removedArray[0] >= 5 &&
+        removedArray.some((e, i) => (i === 0 ? false : e !== 0)))
+    )
+      keptArray[keptArray.length - 1] = keptArray[keptArray.length - 1] + 1;
+
+    return parseFloat(`${integer}.${keptArray.join("")}`);
+  };
 
   /**
    * Returns true if param is a number between 0 and 1
