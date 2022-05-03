@@ -13,6 +13,18 @@ import Color from "./model/Color.js";
 class ColorFactory {
   //using variables
   //hex
+
+  static modes = {
+    css: "css",
+    hex: "hex",
+    rgb: "rgb",
+    rgba: "rgba",
+    cmyk: "cmyk",
+    hsl: "hsl",
+    hsv: "hsv",
+    name: "name",
+  };
+
   static createColor = (mode, a, b, c, d) => {
     let modes = {
       css: ColorFactory.createColorFromCSSString,

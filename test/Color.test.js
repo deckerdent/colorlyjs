@@ -178,7 +178,7 @@ describe("new Color('50, 169, 82')", () => {
     expect(color.toHexArray()).toStrictEqual(["00", "00", "00", "00"]);
   });
   test("", () => {
-    expect(color.toHexCSSString()).toBe("#0000");
+    expect(color.toHexCSSString()).toBe("#00000000");
   });
   test("", () => {
     expect(color.toRGBArray()).toStrictEqual([0, 0, 0]);

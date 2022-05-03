@@ -11,9 +11,10 @@ class Color {
   g;
   b;
   a;
+
   precision = {
     rgb: 0,
-    cymk: 2,
+    cmyk: 2,
     hsl: 2,
     hsv: 2,
     opacity: 2,
@@ -247,7 +248,7 @@ class Color {
   //setHexBlue = (hex) => {};
   //rgb
   setRed = (r) => {
-    if (!r) return;
+    if (!r && r !== 0) return;
     this.r =
       r && r < GenericsUtil.zero
         ? GenericsUtil.zero
@@ -257,7 +258,7 @@ class Color {
   };
 
   setGreen = (g) => {
-    if (!g) return;
+    if (!g && g !== 0) return;
     this.g =
       g && g < GenericsUtil.zero
         ? GenericsUtil.zero
@@ -267,7 +268,7 @@ class Color {
   };
 
   setBlue = (b) => {
-    if (!b) return;
+    if (!b && b !== 0) return;
     this.b =
       b && b < GenericsUtil.zero
         ? GenericsUtil.zero
@@ -278,7 +279,7 @@ class Color {
 
   //cmyk
   setCyan = (c) => {
-    if (!c) return;
+    if (!c && c !== 0) return;
     let cmyk = ParserUtil.parseRGBAToCMYK(
       this.getRed(),
       this.getGreen(),
@@ -302,7 +303,7 @@ class Color {
   };
 
   setYellow = (y) => {
-    if (!y) return;
+    if (!y && y !== 0) return;
     let cmyk = ParserUtil.parseRGBAToCMYK(
       this.getRed(),
       this.getGreen(),
@@ -326,7 +327,7 @@ class Color {
   };
 
   setMagenta = (m) => {
-    if (!m) return;
+    if (!m && m !== 0) return;
     let cmyk = ParserUtil.parseRGBAToCMYK(
       this.getRed(),
       this.getGreen(),
@@ -350,7 +351,7 @@ class Color {
   };
 
   setBlack = (k) => {
-    if (!k) return;
+    if (!k && k !== 0) return;
     let cmyk = ParserUtil.parseRGBAToCMYK(
       this.getRed(),
       this.getGreen(),
@@ -375,7 +376,7 @@ class Color {
   };
   //hsl, hsv
   setHue = (h) => {
-    if (!h) return;
+    if (!h && h !== 0) return;
     let hsl = ParserUtil.parseRGBAToHSL(
       this.getRed(),
       this.getGreen(),
@@ -399,7 +400,7 @@ class Color {
   };
 
   setSaturation = (s) => {
-    if (!s) return;
+    if (!s && s !== 0) return;
     let hsl = ParserUtil.parseRGBAToHSL(
       this.getRed(),
       this.getGreen(),
@@ -423,7 +424,7 @@ class Color {
   };
 
   setLightness = (l) => {
-    if (!l) return;
+    if (!l && l !== 0) return;
     let hsl = ParserUtil.parseRGBAToHSL(
       this.getRed(),
       this.getGreen(),
@@ -447,7 +448,7 @@ class Color {
   };
 
   setValue = (v) => {
-    if (!v) return;
+    if (!v && v !== 0) return;
     let hsv = ParserUtil.parseRGBAToHSV(
       this.getRed(),
       this.getGreen(),
@@ -473,7 +474,7 @@ class Color {
   //additional setters for transparency
   //TODO: setHexOpacity = (o) => {};
   setDecimalOpacity = (o) => {
-    if (!o) return;
+    if (!o && o !== 0) return;
     this.a =
       o && o < GenericsUtil.zero
         ? GenericsUtil.zero
@@ -483,7 +484,7 @@ class Color {
   };
 
   setIntOpacity = (o) => {
-    if (!o) return;
+    if (!o && o !== 0) return;
     o =
       o && o < GenericsUtil.zero
         ? GenericsUtil.zero
@@ -562,14 +563,15 @@ class Color {
       this.getRed(),
       this.getGreen(),
       this.getBlue()
-    );
+    ).map((e) => GenericsUtil.roundNumberToInfinity(e, this.precision.cmyk));
   };
+
   toCMYKCSSString = () => {
     let cmyk = ParserUtil.parseRGBAToCMYK(
       this.getRed(),
       this.getGreen(),
       this.getBlue()
-    );
+    ).map((e) => GenericsUtil.roundNumberToInfinity(e, this.precision.cmyk));
     return CSSUtil.toCMYKCSSString(...cmyk);
   };
   //hsl
@@ -578,6 +580,10 @@ class Color {
       this.getRed(),
       this.getGreen(),
       this.getBlue()
+    ).map((e, i) =>
+      i === 0
+        ? GenericsUtil.roundNumberToInfinity(e, this.precision.hsl - 2)
+        : GenericsUtil.roundNumberToInfinity(e, this.precision.hsl)
     );
   };
 
@@ -586,6 +592,10 @@ class Color {
       this.getRed(),
       this.getGreen(),
       this.getBlue()
+    ).map((e, i) =>
+      i === 0
+        ? GenericsUtil.roundNumberToInfinity(e, this.precision.hsl - 2)
+        : GenericsUtil.roundNumberToInfinity(e, this.precision.hsl)
     );
     return CSSUtil.toHSLCSSString(...hsl);
   };
@@ -595,6 +605,10 @@ class Color {
       this.getRed(),
       this.getGreen(),
       this.getBlue()
+    ).map((e, i) =>
+      i === 0
+        ? GenericsUtil.roundNumberToInfinity(e, this.precision.hsv - 2)
+        : GenericsUtil.roundNumberToInfinity(e, this.precision.hsv)
     );
   };
   toHSVCSSString = () => {
@@ -602,6 +616,10 @@ class Color {
       this.getRed(),
       this.getGreen(),
       this.getBlue()
+    ).map((e, i) =>
+      i === 0
+        ? GenericsUtil.roundNumberToInfinity(e, this.precision.hsv - 2)
+        : GenericsUtil.roundNumberToInfinity(e, this.precision.hsv)
     );
     return CSSUtil.toHSVCSSString(...hsv);
   };
