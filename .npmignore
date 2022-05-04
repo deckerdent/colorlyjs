@@ -1,2 +1,6 @@
 src
 test
+.gitignore
+README.md
+.babelrc
+/index.js

@@ -7,9 +7,6 @@
  */
 import ColorFactory from "./ColorFactory.js";
 import Color from "./model/Color.js";
-const Colorly = {
-  ColorFactory: ColorFactory,
-  Color: Color,
-};
+import CSSColors from "./util/CSSColors";
 
-export default Colorly;
+export { ColorFactory, Color, CSSColors };
