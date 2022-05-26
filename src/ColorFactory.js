@@ -1,20 +1,20 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * @author DeckerM7
  * @since 20220414
  *
  */
-import GenericsUtil from "./util/GenericsUtil.js";
-import ParserUtil from "./util/ParserUtil.js";
-import CSSUtil from "./util/CSSUtil.js";
-import CSSColors from "./util/CSSColors.js";
-
-import Color from "./model/Color.js";
-
+const GenericsUtil_js_1 = require("./util/GenericsUtil.js");
+const ParserUtil_js_1 = require("./util/ParserUtil.js");
+const CSSUtil_js_1 = require("./util/CSSUtil.js");
+const CSSColors_js_1 = require("./util/CSSColors.js");
+const Color_js_1 = require("./model/Color.js");
 class ColorFactory {
-  //using variables
-  //hex
-
-  static modes = {
+}
+//using variables
+//hex
+ColorFactory.modes = {
     css: "css",
     hex: "hex",
     rgb: "rgb",
@@ -23,123 +23,115 @@ class ColorFactory {
     hsl: "hsl",
     hsv: "hsv",
     name: "name",
-  };
-
-  static createColor = (mode, a, b, c, d) => {
+};
+ColorFactory.createColor = (mode, a, b, c, d) => {
     let modes = {
-      css: ColorFactory.createColorFromCSSString,
-      hex: ColorFactory.createColorFromHex,
-      rgb: ColorFactory.createColorFromRGB,
-      rgba: ColorFactory.createColorFromRGBA,
-      cmyk: ColorFactory.createColorFromCMYK,
-      hsl: ColorFactory.createColorFromHSL,
-      hsv: ColorFactory.createColorFromHSV,
-      name: ColorFactory.createColorFromNamedCSSColor,
+        css: ColorFactory.createColorFromCSSString,
+        hex: ColorFactory.createColorFromHex,
+        rgb: ColorFactory.createColorFromRGB,
+        rgba: ColorFactory.createColorFromRGBA,
+        cmyk: ColorFactory.createColorFromCMYK,
+        hsl: ColorFactory.createColorFromHSL,
+        hsv: ColorFactory.createColorFromHSV,
+        name: ColorFactory.createColorFromNamedCSSColor,
     };
-
     return modes[mode] ? modes[mode](a, b, c, d) : undefined;
-  };
-
-  static createColorFromHex = (hex) => {
-    if (!GenericsUtil.isHexValue(hex)) return;
-    let rgba = ParserUtil.parseHexToRGBA(
-      GenericsUtil.convertToHarmonizedHexValue(hex)
-    );
-    return new Color(...rgba);
-  };
-
-  //rgba
-  static createColorFromRGB = (r, g, b) => {
-    if (!GenericsUtil.isRGBArray([r, g, b])) return;
-    return new Color(r, g, b);
-  };
-
-  static createColorFromRGBA = (r, g, b, a) => {
-    if (!GenericsUtil.isRGBAArray([r, g, b, a])) return;
-    return new Color(r, g, b, a);
-  };
-
-  //cmyk
-  static createColorFromCMYK = (c, m, y, k) => {
-    if (!GenericsUtil.isCMYKArray([c, m, y, k])) return;
-    return new Color(...ParserUtil.parseCMYKToRGBA(c, m, y, k));
-  };
-
-  //hsl
-  static createColorFromHSL = (h, s, l) => {
-    if (!GenericsUtil.isHSLArray([h, s, l])) return;
-    return new Color(...ParserUtil.parseHSLToRGBA(h, s, l));
-  };
-
-  //hsv
-  static createColorFromHSV = (h, s, v) => {
-    if (!GenericsUtil.isHSVArray([h, s, v])) return;
-    return new Color(...ParserUtil.parseHSVToRGBA(h, s, v));
-  };
-
-  //using css strings
-  //hex
-  static createColorFromCSSString = (cssStr) => {
+};
+ColorFactory.createColorFromHex = (hex) => {
+    if (!GenericsUtil_js_1.default.isHexValue(hex))
+        return;
+    let rgba = ParserUtil_js_1.default.parseHexToRGBA(GenericsUtil_js_1.default.convertToHarmonizedHexValue(hex));
+    return new Color_js_1.default(...rgba);
+};
+//rgba
+ColorFactory.createColorFromRGB = (r, g, b) => {
+    if (!GenericsUtil_js_1.default.isRGBArray([r, g, b]))
+        return;
+    return new Color_js_1.default(r, g, b);
+};
+ColorFactory.createColorFromRGBA = (r, g, b, a) => {
+    if (!GenericsUtil_js_1.default.isRGBAArray([r, g, b, a]))
+        return;
+    return new Color_js_1.default(r, g, b, a);
+};
+//cmyk
+ColorFactory.createColorFromCMYK = (c, m, y, k) => {
+    if (!GenericsUtil_js_1.default.isCMYKArray([c, m, y, k]))
+        return;
+    return new Color_js_1.default(...ParserUtil_js_1.default.parseCMYKToRGBA(c, m, y, k));
+};
+//hsl
+ColorFactory.createColorFromHSL = (h, s, l) => {
+    if (!GenericsUtil_js_1.default.isHSLArray([h, s, l]))
+        return;
+    return new Color_js_1.default(...ParserUtil_js_1.default.parseHSLToRGBA(h, s, l));
+};
+//hsv
+ColorFactory.createColorFromHSV = (h, s, v) => {
+    if (!GenericsUtil_js_1.default.isHSVArray([h, s, v]))
+        return;
+    return new Color_js_1.default(...ParserUtil_js_1.default.parseHSVToRGBA(h, s, v));
+};
+//using css strings
+//hex
+ColorFactory.createColorFromCSSString = (cssStr) => {
     let color;
-    if (cssStr.indexOf(CSSUtil.hexPrefix) === 0) {
-      color = ColorFactory.createColorFromHexCSSString(cssStr);
-    } else if (cssStr.indexOf(CSSUtil.rgbaPrefix) === 0) {
-      color = ColorFactory.createColorFromRGBACSSString(cssStr);
-    } else if (cssStr.indexOf(CSSUtil.rgbPrefix) === 0) {
-      color = ColorFactory.createColorFromRGBCSSString(cssStr);
-    } else if (cssStr.indexOf(CSSUtil.cmykPrefix) === 0) {
-      color = ColorFactory.createColorFromCMYKCSSString(cssStr);
-    } else if (cssStr.indexOf(CSSUtil.hslPrefix) === 0) {
-      color = ColorFactory.createColorFromHSLCSSString(cssStr);
-    } else if (cssStr.indexOf(CSSUtil.hsvPrefix) === 0) {
-      color = ColorFactory.createColorFromHSVCSSString(cssStr);
-    } else {
-      return;
+    if (cssStr.indexOf(CSSUtil_js_1.default.hexPrefix) === 0) {
+        color = ColorFactory.createColorFromHexCSSString(cssStr);
     }
-
+    else if (cssStr.indexOf(CSSUtil_js_1.default.rgbaPrefix) === 0) {
+        color = ColorFactory.createColorFromRGBACSSString(cssStr);
+    }
+    else if (cssStr.indexOf(CSSUtil_js_1.default.rgbPrefix) === 0) {
+        color = ColorFactory.createColorFromRGBCSSString(cssStr);
+    }
+    else if (cssStr.indexOf(CSSUtil_js_1.default.cmykPrefix) === 0) {
+        color = ColorFactory.createColorFromCMYKCSSString(cssStr);
+    }
+    else if (cssStr.indexOf(CSSUtil_js_1.default.hslPrefix) === 0) {
+        color = ColorFactory.createColorFromHSLCSSString(cssStr);
+    }
+    else if (cssStr.indexOf(CSSUtil_js_1.default.hsvPrefix) === 0) {
+        color = ColorFactory.createColorFromHSVCSSString(cssStr);
+    }
+    else {
+        return;
+    }
     return color;
-  };
-
-  static createColorFromHexCSSString = (cssStr) => {
-    let hex = CSSUtil.cssStringToHarmonizedHexString(cssStr);
-
+};
+ColorFactory.createColorFromHexCSSString = (cssStr) => {
+    let hex = CSSUtil_js_1.default.cssStringToHarmonizedHexString(cssStr);
     return hex ? ColorFactory.createColorFromHex(hex) : undefined;
-  };
-
-  //rgba
-  static createColorFromRGBCSSString = (cssStr) => {
-    let rgb = CSSUtil.cssStringToRGBArray(cssStr);
-
+};
+//rgba
+ColorFactory.createColorFromRGBCSSString = (cssStr) => {
+    let rgb = CSSUtil_js_1.default.cssStringToRGBArray(cssStr);
     return rgb ? ColorFactory.createColorFromRGB(...rgb) : undefined;
-  };
-  static createColorFromRGBACSSString = (cssStr) => {
-    let rgba = CSSUtil.cssStringToRGBAArray(cssStr);
+};
+ColorFactory.createColorFromRGBACSSString = (cssStr) => {
+    let rgba = CSSUtil_js_1.default.cssStringToRGBAArray(cssStr);
     return rgba ? ColorFactory.createColorFromRGBA(...rgba) : undefined;
-  };
-
-  //cmyk
-  static createColorFromCMYKCSSString = (cssStr) => {
-    let cmyk = CSSUtil.cssStringToCMYKArray(cssStr);
+};
+//cmyk
+ColorFactory.createColorFromCMYKCSSString = (cssStr) => {
+    let cmyk = CSSUtil_js_1.default.cssStringToCMYKArray(cssStr);
     return cmyk ? ColorFactory.createColorFromCMYK(...cmyk) : undefined;
-  };
-
-  //hsl
-  static createColorFromHSLCSSString = (cssStr) => {
-    let hsl = CSSUtil.cssStringToHSLArray(cssStr);
+};
+//hsl
+ColorFactory.createColorFromHSLCSSString = (cssStr) => {
+    let hsl = CSSUtil_js_1.default.cssStringToHSLArray(cssStr);
     return hsl ? ColorFactory.createColorFromHSL(...hsl) : undefined;
-  };
-
-  //hsv
-  static createColorFromHSVCSSString = (cssStr) => {
-    let hsv = CSSUtil.cssStringToHSVArray(cssStr);
+};
+//hsv
+ColorFactory.createColorFromHSVCSSString = (cssStr) => {
+    let hsv = CSSUtil_js_1.default.cssStringToHSVArray(cssStr);
     return hsv ? ColorFactory.createColorFromHSV(...hsv) : undefined;
-  };
-
-  //using css color names
-  static createColorFromNamedCSSColor = (colorName) => {
-    if (!CSSColors[colorName]) return;
-    return ColorFactory.createColorFromHexCSSString(CSSColors[colorName]);
-  };
-}
-
-export default ColorFactory;
+};
+//using css color names
+ColorFactory.createColorFromNamedCSSColor = (colorName) => {
+    if (!CSSColors_js_1.default[colorName])
+        return;
+    return ColorFactory.createColorFromHexCSSString(CSSColors_js_1.default[colorName]);
+};
+exports.default = ColorFactory;
+//# sourceMappingURL=ColorFactory.js.map
