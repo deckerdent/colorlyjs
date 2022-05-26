@@ -4,3 +4,4 @@ test
 README.md
 .babelrc
 /index.js
+node_modules
