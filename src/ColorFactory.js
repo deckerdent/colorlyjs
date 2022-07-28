@@ -8,8 +8,6 @@ import ParserUtil from "./util/ParserUtil.js";
 import CSSUtil from "./util/CSSUtil.js";
 import CSSColors from "./util/CSSColors.js";
 
-import Color from "./model/Color.js";
-
 class ColorFactory {
   //using variables
   //hex
