@@ -6,7 +6,7 @@ Colorly is an easy to use color parsing library which supports rgb, rgba, hex, c
 
 Using npm
 
-```
+```bash
   $ npm install colorly
 ```
 
@@ -15,7 +15,7 @@ Using npm
 The library consists of a few utility classed which are all combined under the hood of the `Color` class. An instance of this class represents a color which you may maipulate.
 See the API Reference below for all possible functions `Color` and `ColorFactory` provides. To get started do,
 
-```
+```js
 import { ColorFactory, Color, CSSColors } from Colorly
 
 const myColor = ColorFactory.createColor('rgb', 0, 0, 0) //represents a black color
@@ -23,7 +23,7 @@ const myColor = ColorFactory.createColor('rgb', 0, 0, 0) //represents a black co
 
 or if you are working with ES5
 
-```
+```js
 const colorlyjs = require('colorlyjs')
 const {ColorFactory, Color, CSSColors} = colorlyjs
 const myColor = ColorFactory.createColor('rgb', 0, 0, 0) //represents a black color
@@ -31,14 +31,14 @@ const myColor = ColorFactory.createColor('rgb', 0, 0, 0) //represents a black co
 
 From this basis you may do your calculations, e.g.
 
-```
+```js
 myColor.addRed(255) // changes the color to be 255, 0, 0 -> a red color
 ```
 
 Note that the alpha value in rgba as well as the relative values in cmyk, hsl and hsv are stored as a floating number between 0 and 1, while the hue and rgb values are
 processed in a range of 0 to 360 and 0 to 255 respectively. Therefore you add cyan as
 
-```
+```js
 myColor.addCyan(0.2) // add 20 percent Cyan to your color
 ```
 
@@ -83,26 +83,26 @@ Note that when calling a function that parses a color to a certain CSS string th
 
 Use adder functions to add or substract a certain value, e.g.
 
-```
+```js
 myColor.addRed(25) // adds 25 red to the the color
 myColor.addGreen(-10) // substracts 10 green from the color
 ```
 
 or setters to set the value of a certain property.
 
-```
+```js
 myColor.setCyan(0.9) // sets Cyan to 90%
 ```
 
 or get a certain value by
 
-```
+```js
 myColor.getSaturation() // returns the saturation of the current color
 ```
 
 You may want to keep a color and calculate a second color on the basis of it. You can use the `copy()` function to get a exact clone of your color, like so
 
-```
+```js
 const myColor2 = myColor.copy() // returns a clone of myColor
 ```
 
